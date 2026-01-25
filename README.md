@@ -1,2 +1,3 @@
 # fable-xport
-Why doesn't fable have an export feature yet? I'm moving my books to storygraph
+An attempt to reclaim my reading history and ratings from Fable. Why doesn't Fable have an export feature yet?
+That's it! I'm moving my books to StoryGraph.
