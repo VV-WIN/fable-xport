@@ -70,8 +70,8 @@ def setup_env_file() -> bool:
     print("4. Refresh the page")
     print("5. Look for requests to 'api.fable.co'")
     print("6. In the request URL, find the USER_ID (it's a UUID)")
-    print("   Example: https://api.fable.co/api/v2/users/462ad0de-a7e8-41aa-a6d6-e3462e981779/")
-    print("           The USER_ID is: 462ad0de-a7e8-41aa-a6d6-e3462e981779\n")
+    print("   Example: https://api.fable.co/api/v2/users/21321312312/")
+    print("           The USER_ID is: 21321312312\n")
 
     user_id = input("Enter your FABLE_USER_ID: ").strip()
 
@@ -199,22 +199,27 @@ def export_books(output_dir: Path, formats: list[str], separate_lists: bool = Fa
                         safe_name = "".join(c if c.isalnum() or c in (' ', '-', '_') else '_' for c in list_name)
                         safe_name = safe_name.replace(' ', '_')
                         
+                        exported_formats = []
                         for fmt in formats:
                             try:
                                 if fmt == "csv":
                                     path = output_dir / f"{safe_name}.csv"
                                     export_to_csv(books, path)
+                                    exported_formats.append("CSV")
                                 elif fmt == "json":
                                     path = output_dir / f"{safe_name}.json"
                                     export_to_json(books, path)
+                                    exported_formats.append("JSON")
                                 elif fmt == "md":
                                     path = output_dir / f"{safe_name}.md"
                                     export_to_markdown(books, path)
+                                    exported_formats.append("MD")
                             except Exception as export_error:
                                 print(f"  ✗ Error exporting {fmt} for '{list_name}': {export_error}")
                                 continue
                         
-                        print(f"  ✓ Exported {len(books)} books from '{list_name}'")
+                        formats_str = ", ".join(exported_formats)
+                        print(f"  ✓ Exported {len(books)} books from '{list_name}' ({formats_str})")
                         total_books += len(books)
                     else:
                         print(f"  ⊘ List '{list_name}' is empty")
