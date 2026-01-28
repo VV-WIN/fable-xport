@@ -1,6 +1,6 @@
-# Fable Book Exporter
+# Fable Xport
 
-CLI tool to export your Fable.co library via their API. Supports CSV, JSON, and Markdown output formats.
+CLI tool to export your Fable.co book library via their API. Supports CSV, JSON, and Markdown output formats.
 
 ## Features
 
