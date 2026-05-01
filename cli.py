@@ -1,4 +1,6 @@
 import sys
+import re
+
 from pathlib import Path
 from typing import Optional
 
@@ -64,19 +66,23 @@ def setup_env_file() -> bool:
     )
 
     print("\n=== Step 1: Get Your User ID ===")
-    print("1. Open Fable in your web browser (fable.com)")
+    print("1. Open Fable in your web browser (fable.co)")
     print("2. Open Developer Tools (F12 or right-click → Inspect)")
     print("3. Go to the Network tab")
     print("4. Refresh the page")
-    print("5. Look for requests to 'api.fable.co'")
-    print("6. In the request URL, find the USER_ID (it's a UUID)")
-    print("   Example: https://api.fable.co/api/v2/users/21321312312/")
-    print("           The USER_ID is: 21321312312\n")
+    print("5. Look for requests to 'api.fable.co/api/settings/profile'")
+    print("6. Click on the response tab for the request, and find the 'id' field (it's a UUID)")
+    print('   Example: {"id": "abcd1234-abcd-abcd-abcd-abcd123456789", "pic": "...", ...}')
+    print("           Your FABLE_USER_ID is: abcd0123-abcd-abcd-abcd-abcd0123456789\n")
 
     user_id = input("Enter your FABLE_USER_ID: ").strip()
 
     if not user_id:
         print("Error: User ID is required!")
+        return False
+
+    if not re.match(r"[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}", user_id):
+        print("Error: User ID is not a valid UUID!")
         return False
 
     print("\n=== Step 2: Get Your Auth Token ===")
@@ -116,7 +122,7 @@ def select_export_formats() -> list[str]:
 
     formats = []
     choices = [
-        ("csv", "CSV (spreadsheet - import to Excel, Google Sheets)"),
+        ("csv", "CSV (spreadsheet - import to Goodreads, Excel and Google Sheets)"),
         ("json", "JSON (structured data format)"),
         ("md", "Markdown (readable text format)"),
     ]
